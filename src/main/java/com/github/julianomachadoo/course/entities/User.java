@@ -1,15 +1,20 @@
 package com.github.julianomachadoo.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
-public class Users implements Serializable {
+@Table(name = "tb_user")
+public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -20,11 +25,14 @@ public class Users implements Serializable {
 	private String phone;
 	private String password;
 	
-	public Users() {
+	@OneToMany(mappedBy = "client")
+	private List<Order> orders = new ArrayList<>();
+	
+	public User() {
 		
 	}
 
-	public Users(Long id, String name, String email, String phone, String password) {
+	public User(Long id, String name, String email, String phone, String password) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -71,6 +79,10 @@ public class Users implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public List<Order> getOrders() {
+		return orders;
+	}
 
 	@Override
 	public int hashCode() {
@@ -85,7 +97,7 @@ public class Users implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Users other = (Users) obj;
+		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
 
